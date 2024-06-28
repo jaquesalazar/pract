@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="icon" type="image/png" href="Image/list.png">
+    <title>Listas</title>
+</head>
+<body>
+
+    <header class="container-fluid fixed-top">
+        <center>
+        <h1 class="display-5 text-white">
+            <i class="bi bi-card-checklist"></i> 
+            Práctica: To Do List
+        </h1>
+        </center>
+    </header>
+    
+    <div class="container mt-5">
+        <center><h1 class="display-6">Bienvenidos a la Lista de tareas</h1></center>
+    </div>
+
+    <hr>
+    
+    <div class="container">
+        <form id="formularioTarea" class="d-flex justify-content-center">
+          <div class="row g-3 w-50">
+            <div class="col">
+              <div class="input-group">
+                <input type="text" id="entradaTarea" class="form-control" placeholder="Nueva tarea" aria-label="Nueva tarea">
+                <button type="submit" class="btn btn-outline-success">Agregar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <br>
+   
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tarea</th>
+                    <th>Completada</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaTareas">
+            </tbody>
+        </table>
+  
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const formularioTarea = document.getElementById('formularioTarea');
+            const entradaTarea = document.getElementById('entradaTarea');
+            const cuerpoTablaTareas = document.getElementById('cuerpoTablaTareas');
+
+            let tareas = [];
+            let idTarea = 0;
+
+            formularioTarea.addEventListener('submit', function (e) {
+            e.preventDefault();
+    const textoTarea = entradaTarea.value.trim();
+    
+    if (textoTarea !== '') {
+        tareas.push({ id: idTarea++, texto: textoTarea, completada: false });
+        mostrarTareas();
+        entradaTarea.value = '';
+        Swal.fire({
+            title: 'Agregada',
+            text: 'La tarea ha sido agregada con éxito',
+            icon: 'success',
+            confirmButtonText: 'Aceptar', 
+            confirmButtonColor: '#6AC544' 
+        });
+    } else {
+        Swal.fire({
+            title: 'Error',
+            text: 'Debe ingresar una tarea',
+            icon: 'error',
+            confirmButtonText: 'Aceptar', 
+            confirmButtonColor: '#d33' 
+        });
+    }
+});
+            function mostrarTareas() {
+                cuerpoTablaTareas.innerHTML = '';
+                tareas.forEach(tarea => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${tarea.id}</td>
+                        <td>${tarea.texto}</td>
+                        <td><input type="checkbox" ${tarea.completada ? 'checked' : ''} data-id="${tarea.id}" class="completarTarea"></td>
+                        <td>
+                            <button data-id="${tarea.id}" class="eliminarTarea">Eliminar</button>
+                        </td>
+                    `;
+                    cuerpoTablaTareas.appendChild(fila);
+                });
+
+                document.querySelectorAll('.completarTarea').forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const idTarea = parseInt(this.getAttribute('data-id'));
+                        const tarea = tareas.find(t => t.id === idTarea);
+                        tarea.completada = this.checked;
+                    });
+                });
+
+                 document.querySelectorAll('.eliminarTarea').forEach(boton => {
+                 boton.addEventListener('click', function () {
+                 const idTarea = parseInt(this.getAttribute('data-id'));
+
+                 Swal.fire({
+                 title: "Estas seguro?",
+                 text: "No podrá recuperar la tarea!",
+                 icon: "warning",
+                 showCancelButton: true,
+                 confirmButtonColor: "#6AC544",
+                 cancelButtonColor: "#d33",
+                 cancelButtonText: "Cancelar", 
+                 confirmButtonText: "Sí, eliminar!"
+                     }).then((result) => {
+                          if (result.isConfirmed) {
+                          tareas = tareas.filter(t => t.id !== idTarea);
+                          mostrarTareas();
+                          entradaTarea.value = '';
+                         Swal.fire({
+                         title: "Eliminada!",
+                         text: "Tu tarea ha sido eliminada.",
+                         icon: "success"
+                      });
+                         }
+                        });
+                    });
+                });
+            }
+        });
+    </script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
+
+<!-- PRACTICA DE CLASE:
+        Quieres salir conmigo
+        <button id="botonNo">No</button>
+        <button id="botonSi">Si</button>
+
+        <script> 
+        const botonSi = document.getElementById("botonSi");
+        const botonNo = document.getElementById("botonNo");
+        boton.addEventListener("click", botoninerHandler);
+                function botonNoHandler(){0
+                botonNo.style.position = "absolute";
+                botonNo.style.left = Math.random() + 100 + "%"
+                botonNo.style.top = Math.random() + 100 + "%"
+                }
+        </script> -->
+
+<!-- Var, let, const-->
+ <!--
+var valorBoleano = false;
+            let soyunafuncion = function (){
+                console.log("DENTRO DE UNA VARIABLE")
+            };
+                const soyunjson = {
+                    nombre: "Jaque",
+                };
+
+                console.log(soyunjson.nombre)
+            if(true){
+
+                let valorsecreto = 42;
+            }
+            
+            console.log(valorsecreto); 
+
+            Implementar una lista de tareas 
+             - Agregar una tarea con un solo texto 
+             - Mostrar tareas actuales
+             - Completar tareas
+             - Eliminar tareas
+-->
